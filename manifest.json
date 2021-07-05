@@ -1,0 +1,17 @@
+{
+    "name": "Professor Rating",
+    "description": "Implements UNF's ISQ rating for each professor within the course registration page",
+    "version": "1.0",
+    "manifest_version": 2,
+    "permissions": [
+        "activeTab"
+      ],
+    "content_scripts": [
+        {
+            "matches": ["https://banregister.unf.edu/StudentRegistrationSsb/ssb/term/termSelection?mode=search",
+                        "https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch"],
+            "js": ["content.js"],
+            "run_at": "document_end"  
+        }
+    ]
+  }
