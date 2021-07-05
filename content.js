@@ -15,9 +15,10 @@ window.addEventListener('load', () => {
             setTimeout(function() { 
                 subject = document.querySelector("#searchTerms > span:nth-child(2) > label > span").innerHTML.substring(0, 3);
 
-                var trlist = document.querySelector("#table1 > tbody").getElementsByTagName("tr");
+                let trlist = document.querySelector("#table1 > tbody").getElementsByTagName("tr");
                 entireTable = Array.from(trlist); 
 
+                // I think this is creating multiple separate arrays rather than 1 array with multiple arrays within that array
                 for(let i = 0; i < entireTable.length; i++) {
                     let currentProfessor = Array.from(entireTable[i].cells[7].getElementsByTagName("a"));
                     courseAndProfessorName[i] = []; 
@@ -29,4 +30,4 @@ window.addEventListener('load', () => {
             }, 1000);
         }
     }
-});
+}); 

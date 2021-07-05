@@ -8,10 +8,9 @@
       ],
     "content_scripts": [
         {
-            "matches": ["https://banregister.unf.edu/StudentRegistrationSsb/ssb/term/termSelection?mode=search",
-                        "https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch"],
+            "matches": ["https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch"],
             "js": ["content.js"],
-            "run_at": "document_end"  
+            "run_at": "document_end"   
         }
     ]
-  }
+  } 
