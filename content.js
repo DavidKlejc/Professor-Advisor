@@ -1,33 +1,105 @@
 window.addEventListener('load', () => {
+    function retrieveCourseAndProfessorName() {
+        return new Promise((resolve, reject) => {
+            if (window.location.href == 'https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch'){
 
-    var subject;                        // subject of class (PHY = Physics, COT = Computer Theory, etc.)
-    var searchButton;                   // search button you click once you have chosen a subject
-    var entireTable;                    // table in course page consisting of course information such as course title, number, subject description as well as professor name 
-    var courseAndProfessorName = [];    // 2D array in which each index of courseAndProfessorName[] is another array consisting of two variables: Course & Professor Name 
+                let searchButton = document.getElementById("search-go");
+                searchButton.onclick = classPageLoaded;
 
-    if (window.location.href == 'https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch'){
-        searchButton = document.getElementById("search-go");
-        searchButton.onclick = classPageLoaded;
+                function classPageLoaded() {
+                    // Changes the amount of courses displayed in the table from 10 per page to 50 per page
+                    setTimeout(() => {
+                        const selections = document.querySelector('select.page-size-select');
+                        selections.value = 50;
+                        const evt = document.createEvent("HTMLEvents");
+                        evt.initEvent("change", true, true);
+                        selections.dispatchEvent(evt);
+                    }, 1000);
 
-        function classPageLoaded() {
-            console.log('Course page loaded');
+                    setTimeout(() => {  
+                        let courseFromCoursePage;
+                        let courseAndProfessorName = [];   
+                        let subject = document.querySelector("#searchTerms > span:nth-child(2) > label > span").innerHTML.substring(0, 3);
+                        const trlist = document.querySelector("#table1 > tbody").getElementsByTagName("tr");
+                        let entireTable = Array.from(trlist); 
 
-            setTimeout(function() { 
-                subject = document.querySelector("#searchTerms > span:nth-child(2) > label > span").innerHTML.substring(0, 3);
-
-                let trlist = document.querySelector("#table1 > tbody").getElementsByTagName("tr");
-                entireTable = Array.from(trlist); 
-
-                // I think this is creating multiple separate arrays rather than 1 array with multiple arrays within that array
-                for(let i = 0; i < entireTable.length; i++) {
-                    let currentProfessor = Array.from(entireTable[i].cells[7].getElementsByTagName("a"));
-                    courseAndProfessorName[i] = []; 
-                    for(let j = 0; j < 1; j++) { 
-                        courseAndProfessorName[i][j] = [subject.concat(entireTable[i].cells[2].innerHTML.toString()), currentProfessor[0].innerHTML];
-                    } 
-                    console.log(courseAndProfessorName[i]);
+                        for(let i = 0; i < entireTable.length; i++) {
+                            let currentProfessor = Array.from(entireTable[i].cells[7].getElementsByTagName("a"));
+                            if(currentProfessor != "") {
+                                let professorLastNameFromCoursePage = currentProfessor[0].innerHTML.split(" ").pop();;
+                                courseFromCoursePage = subject.concat(entireTable[i].cells[2].innerHTML.toString());
+                                courseAndProfessorName[i] = courseFromCoursePage.concat(" ", professorLastNameFromCoursePage); 
+                            } else {
+                                courseAndProfessorName[i] = courseFromCoursePage.concat(" ", "No professor listed");
+                            }
+                        }
+                        resolve(courseAndProfessorName);
+                    }, 3500); 
                 }
-            }, 1000);
-        }
+            }
+        });
     }
+
+    function retrieveISQ_Data() {
+        return new Promise((resolve, reject) => {
+            let ISQData = [];
+
+            // Used to split ISQ Data into a 2D-Array, where each outer index consists of an array of 2 elements: Course & Professor Name 
+            function stringTo2dArray(string, d1, d2) {
+                return string.split(d1).map(function(x){return x.split(d2)});
+            }
+
+            let requestISQData = new XMLHttpRequest();
+            requestISQData.open('GET', 'https://gist.githubusercontent.com/DavidKlejc/0e339bdad700eea6c70fff2c14cbff32/raw/af60480b53bfcfd79bef6650073c1358d8585263/ISQData.csv', true);
+            requestISQData.onreadystatechange = function()
+            {
+                if(requestISQData.readyState == XMLHttpRequest.DONE && requestISQData.status == 200)
+                {
+                    ISQData = stringTo2dArray(requestISQData.response, "\n", "\t");
+                    for(let i = 0; i < ISQData.length; i++) {
+                        for(let j = 0; j < 1; j++) {
+                            ISQData[i][0] = ISQData[i][0].replace(",", ""); 
+                        }
+                    }
+                    resolve(ISQData);
+                }
+            }
+            requestISQData.send();
+        });
+    }
+
+    async function insertIntoTable() {
+
+        const coursesAndProfessors = await retrieveCourseAndProfessorName();
+        const ISQ_Data = await retrieveISQ_Data();
+
+        console.log(coursesAndProfessors);
+        console.log(ISQ_Data);
+
+        let tableOfRatings = [];
+        let professorFound = false;
+
+        for(let i = 0; i < coursesAndProfessors.length; i++) {
+            let professorRating = "No rating found";
+            for(let j = 0; j < ISQ_Data.length; j++) {
+                if(coursesAndProfessors[i] === ISQ_Data[j][0]) {
+                    professorRating = parseFloat(ISQ_Data[j][1]);
+                    professorRating = professorRating.toFixed(2);
+                    professorFound = true;
+                }
+            }
+            if(professorFound) {
+                tableOfRatings[i] = professorRating;
+            }
+        }
+        console.log(tableOfRatings);
+
+        // Now that I have the tableOfRatings, insert into course registration page 
+        // Just need to add a td in each row. 
+
+
+
+
+    }
+    insertIntoTable();
 }); 
