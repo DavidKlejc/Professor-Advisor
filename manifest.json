@@ -9,8 +9,7 @@
     "content_scripts": [
         {
             "matches": ["https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch"],
-            "js": ["content.js"],
-            "run_at": "document_end"   
+            "js": ["content.js"]
         }
     ]
   } 
