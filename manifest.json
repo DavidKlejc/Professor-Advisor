@@ -11,5 +11,6 @@
             "matches": ["https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch"],
             "js": ["content.js"]
         }
-    ]
+    ], 
+    "persistent": false
   } 
