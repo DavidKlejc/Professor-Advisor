@@ -1,5 +1,5 @@
 # Professor-Advisor
-Google Chrome extension that implements UNF's ISQ rating for each professor within the course registration page.
+Google Chrome extension that implements University of North Florida's ISQ rating for each professor within the course registration page.
 
 Currently only supports my course schedule, not available on the Chrome Web Store.  
 
