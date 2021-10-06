@@ -75,9 +75,6 @@ window.addEventListener('load', () => {
             const coursesAndProfessors = await retrieveCourseAndProfessorName();
             const ISQ_Data = await retrieveISQ_Data();
 
-            // console.log(coursesAndProfessors);
-            // console.log(ISQ_Data);
-
             let tableOfRatings = [];
 
             for(let i = 0; i < coursesAndProfessors.length; i++) {
@@ -90,12 +87,12 @@ window.addEventListener('load', () => {
                 }
                 tableOfRatings[i] = professorRating;
             }
-            // console.log(tableOfRatings);
 
             if(searchCounter < 1) {
                 let columnToClone = document.querySelector("#table1 > thead > tr > th.sort-disabled.linked-col.ui-state-default");
                 let clone = columnToClone.cloneNode(true);
                 clone.innerHTML = "Rating";
+                clone.style.textAlign = "left";
                 let header = document.querySelector("#table1 > thead > tr");
                 header.appendChild(clone);
                 searchCounter++;
