@@ -3,7 +3,6 @@ let retrieveISQ_Data = () => {
         let ISQData = [];
 
         // Used to split ISQ Data into a 2D-Array, where each outer index consists of an array of 2 elements: Course & Professor Name 
-        // Likely a faster data structure than a 2D-Array, perhaps use a map with a key value pair. 
         let stringTo2dArray = (string, d1, d2) => {
             return string.split(d1).map(function(x){return x.split(d2)});
         }
@@ -48,11 +47,15 @@ window.addEventListener('load', () => {
                             let courseAndProfessorName = [];   
                             const subject = document.querySelector("#searchTerms > span:nth-child(2) > label > span").innerHTML.substring(0, 3);
                             const trlist = document.querySelector("#table1 > tbody").getElementsByTagName("tr");
-                            entireTable = Array.from(trlist); 
-
+                            entireTable = Array.from(trlist);
+                            
                             for(let i = 0; i < entireTable.length; i++) {
                                 const currentProfessor = Array.from(entireTable[i].cells[7].getElementsByTagName("a"));
                                 const courseFromCoursePage = subject.concat(entireTable[i].cells[2].innerHTML.toString());
+
+                                // TODO: implement DB connection and finish logic below
+                                let rating = getData(currentProfessor, courseFromCoursePage);
+
                                 if(currentProfessor != "") {
                                     const professorLastNameFromCoursePage = currentProfessor[0].innerHTML.split(" ").pop();
                                     courseAndProfessorName[i] = courseFromCoursePage.concat(" ", professorLastNameFromCoursePage); 

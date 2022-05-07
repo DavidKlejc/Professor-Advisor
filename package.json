@@ -1,0 +1,22 @@
+{
+  "name": "professor-rating",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidKlejc/UNF-Professor-Rating.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidKlejc/UNF-Professor-Rating/issues"
+  },
+  "homepage": "https://github.com/DavidKlejc/UNF-Professor-Rating#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
