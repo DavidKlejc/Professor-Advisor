@@ -1,16 +1,17 @@
 {
-    "name": "Professor Rating",
-    "description": "Implements UNF's ISQ rating for each professor within the course registration page",
-    "version": "1.0",
-    "manifest_version": 2,
-    "permissions": [
-        "activeTab"
-      ],
-    "content_scripts": [
-        {
-            "matches": ["https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch"],
-            "js": ["content.js"]
-        }
-    ], 
-    "persistent": false
-  } 
+  "name": "Professor Rating",
+  "description": "Implements UNF's ISQ rating for each professor within the course registration page",
+  "version": "2.0",
+  "manifest_version": 3,
+  "permissions": [],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [{
+    "js": [ "content.js" ],
+    "matches": [ "https://banregister.unf.edu/StudentRegistrationSsb/ssb/classSearch/classSearch" ] 
+  }]
+} 
